@@ -19,11 +19,14 @@ var server = http.createServer(function(req,res){
     // Get the HTTP method
     var httpMethod = req.method.toLowerCase();
 
+    // Get query string parameters
+    var queryStringObject = parsedUrl.query;
+
     // Send the response
     res.end("Hello World! \n");
 
     // Log the request path
-    console.log("requested path " + trimmedPath + " with method: " + httpMethod);
+    console.log("requested path " + trimmedPath + " with method: " + httpMethod + " and with these query string parameters: ", queryStringObject);
 });
 
 // Start the server, and have it listen on port 3000
