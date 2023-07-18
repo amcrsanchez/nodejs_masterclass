@@ -6,6 +6,8 @@
 // Dependencies
 var http = require('http');
 var url = require('url');
+var StringDecoder = require('string_decoder').StringDecoder;
+
 // The server should respond to all request with a string
 var server = http.createServer(function(req,res){
     
@@ -24,11 +26,22 @@ var server = http.createServer(function(req,res){
 
     // Get the headers
     var headers = req.headers;
-    // Send the response
-    res.end("Hello World! \n");
 
-    // Log the request path
-    console.log(headers);
+    // Get the payload if any
+    var decoder = new StringDecoder('utf-8')
+    var buffer = ''
+    req.on('data', function(data){
+        buffer = decoder.write(data)
+    })
+
+    req.on('end', function(){
+        // Send the response
+        res.end("Hello World! \n");
+
+        // Log the request path
+        console.log(`data: ${buffer}`);
+    })
+
 });
 
 // Start the server, and have it listen on port 3000
