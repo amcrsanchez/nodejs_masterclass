@@ -76,8 +76,8 @@ var server = http.createServer(function(req,res){
 });
 
 
-// Start the server, and have it listen on port 3000
-server.listen(3000, function(){
+// Start the server
+server.listen(config.port, function(){
     console.log(`Server listening on port ${config.port} on ${config.envName} mode`);
 });
 
