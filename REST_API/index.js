@@ -53,7 +53,7 @@ var server = http.createServer(function(req,res){
         // Route the request to the handler specified in the router
         chosenHandler(data, function(statusCode, payload){
             // Use the status code called back by the handler, or default to 200
-            statusCode = typeof(statusCode) == 'number' ? httpStatusCode : 200;
+            statusCode = typeof(statusCode) == 'number' ? statusCode : 200;
 
             // Use the payload called back by the handler, or default to empty object
             payload = typeof(payload) == 'object' ? payload : {};
@@ -62,8 +62,9 @@ var server = http.createServer(function(req,res){
             var payloadString = JSON.stringify(payload);
 
             // Return the response
+            res.setHeader('Content-Type', 'application/json');
             res.writeHead(statusCode);
-            res.end(payloadString);
+            res.end("Hello World!");
 
             // Log the request path
             console.log('returning this response:', statusCode, payloadString);
