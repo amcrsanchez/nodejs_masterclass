@@ -5,13 +5,27 @@
 
 // Dependencies
 var http = require('http');
+var https = require('https');
 var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config');
+var fs = require('fs');
 
 // The server should respond to all request with a string
-var server = http.createServer(function(req,res){
-    
+var httpServer = http.createServer(function(req,res){
+    serverLogic(req,res);
+});
+
+
+var httpsOptions = {
+    'key': fs.readFileSync('./https/key.pem'),
+    'cert': fs.readFileSync('./https/cert.pem')
+};
+var httpsServer = https.createServer(httpsOptions, function(req,res){
+    serverLogic(req, res);
+});
+
+var serverLogic =  function(req, res){
     // Get the url and parse it
     var parsedUrl = url.parse(req.url, true);
 
@@ -65,20 +79,23 @@ var server = http.createServer(function(req,res){
             // Return the response
             res.setHeader('Content-Type', 'application/json');
             res.writeHead(statusCode);
-            res.end("Hello World!");
+            res.end(payloadString);
 
             // Log the request path
             console.log('returning this response:', statusCode, payloadString);
         });
 
     })
+};
 
+// Start the HTTP server
+httpServer.listen(config.httpPort, function(){
+    console.log(`Server listening on port ${config.httpPort} on ${config.envName} mode`);
 });
 
-
-// Start the server
-server.listen(config.port, function(){
-    console.log(`Server listening on port ${config.port} on ${config.envName} mode`);
+// Start the HTTPS server
+httpsServer.listen(config.httpsPort, function(){
+    console.log(`Server listening on port ${config.httpsPort} on ${config.envName} mode`);
 });
 
 // Define the handlers
