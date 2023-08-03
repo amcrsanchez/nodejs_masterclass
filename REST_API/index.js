@@ -102,9 +102,9 @@ httpsServer.listen(config.httpsPort, function(){
 var handlers = {};
 
 // Sample handler
-handlers.sample = function(data, callback){
-    // Callback a http status code, and a payload object
-    callback(406, {'name': 'Sample handler'});
+handlers.ping = function(data, callback){
+    // 200 status code response to check if server is alive
+    callback(200);
 }
 
 // Not found handler
@@ -114,5 +114,5 @@ handlers.notFound = function(data, callback){
 
 // Define a request router
 var router = {
-    "sample": handlers.sample
+    "ping": handlers.ping
 }
