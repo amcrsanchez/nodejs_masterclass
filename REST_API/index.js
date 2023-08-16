@@ -10,6 +10,12 @@ var url = require('url');
 var StringDecoder = require('string_decoder').StringDecoder;
 var config = require('./config');
 var fs = require('fs');
+var _data = require('./lib/data')
+
+// @TODO delete this
+_data.delete('test','newFile',function(err, data){
+    console.log("this was the error: " + err);
+});
 
 // The server should respond to all request with a string
 var httpServer = http.createServer(function(req,res){
